@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ósk n Art - Icelandic Abstract Artist | Color & Size Commissions</title>
+    <meta name="description" content="Commission custom abstract artworks from Ósk, an Icelandic artist inspired by nature's textures. Color and size made to order for your space.">
+    <meta property="og:title" content="Ósk n Art - Icelandic Abstract Artist">
+    <meta property="og:description" content="Your space, your colors, your story — in abstract.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://osknart.com">
+    <meta property="og:image" content="https://osknart.com/images/og-image.jpg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ósk",
+        "jobTitle": "Abstract Artist",
+        "nationality": "Icelandic",
+        "url": "https://osknart.com",
+        "sameAs": [
+            "https://instagram.com/osk.n.art"
+        ],
+        "knowsAbout": "Abstract Art",
+        "workLocation": {
+            "@type": "Place",
+            "name": "Reykjavík, Iceland"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Ósk n Art</a>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="gallery.html" class="nav-link">Gallery</a>
+                <a href="commissions.html" class="nav-link">Commissions</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-carousel" id="hero-carousel">
+            <div class="hero-slide active">
+                <img src="img/nr1/aurora-whispers-living-room.jpg" alt="Aurora Whispers - Abstract painting by Ósk displayed in modern living room" loading="eager">
+            </div>
+            <div class="hero-slide">
+                <img src="img/nr1/aurora-whispers-bedroom.jpg" alt="Aurora Whispers - Abstract artwork in serene bedroom setting" loading="lazy">
+            </div>
+            <div class="hero-slide">
+                <img src="img/nr1/aurora-whispers-office.jpg" alt="Aurora Whispers - Contemporary abstract art in office space" loading="lazy">
+            </div>
+        </div>
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1 class="hero-title">Ósk n Art</h1>
+                <p class="hero-subtitle">Icelandic Abstract Artist — Color & Size Commissions</p>
+                <div class="hero-cta">
+                    <a href="gallery.html" class="btn btn-primary">View Gallery</a>
+                    <a href="commissions.html" class="btn btn-secondary">Commission a Piece</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-nav">
+            <button class="hero-nav-btn" onclick="previousSlide()">‹</button>
+            <button class="hero-nav-btn" onclick="nextSlide()">›</button>
+        </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section class="intro">
+        <div class="container">
+            <div class="intro-content">
+                <p class="intro-text">I create abstract expressions inspired by Iceland's raw beauty—the interplay of light on ancient stone, the endless textures of volcanic landscapes, and the deep blues of our northern seas. Each piece emerges from this dialogue between color and form, crafted to bring the essence of these natural forces into your space.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Works -->
+    <section class="featured">
+        <div class="container">
+            <h2 class="section-title">Featured Works</h2>
+            <div class="featured-grid">
+                <div class="artwork-card" onclick="window.location.href='gallery.html#aurora-whispers'">
+                    <img src="img/nr1/aurora-whispers-living-room.jpg" alt="Aurora Whispers - Abstract painting in gold, white, and pink tones" loading="lazy">
+                    <div class="artwork-info">
+                        <h3>Aurora Whispers</h3>
+                        <span class="artwork-palette gold-earthy">Gold/Earthy</span>
+                    </div>
+                </div>
+                <div class="artwork-card" onclick="openArtworkDetail('volcanic-silence')">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop&crop=center" alt="Volcanic Silence - Monochrome abstract composition" loading="lazy">
+                    <div class="artwork-info">
+                        <h3>Volcanic Silence</h3>
+                        <span class="artwork-palette monochrome">Monochrome</span>
+                    </div>
+                </div>
+                <div class="artwork-card" onclick="openArtworkDetail('northern-bloom')">
+                    <img src="https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=600&h=800&fit=crop&crop=center" alt="Northern Bloom - Vibrant abstract artwork" loading="lazy">
+                    <div class="artwork-info">
+                        <h3>Northern Bloom</h3>
+                        <span class="artwork-palette vibrant">Vibrant</span>
+                    </div>
+                </div>
+                <div class="artwork-card" onclick="openArtworkDetail('glacier-flow')">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop&crop=center" alt="Glacier Flow - Neutral tones abstract piece" loading="lazy">
+                    <div class="artwork-info">
+                        <h3>Glacier Flow</h3>
+                        <span class="artwork-palette neutral">Neutral</span>
+                    </div>
+                </div>
+                <div class="artwork-card" onclick="openArtworkDetail('midnight-sun')">
+                    <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=800&fit=crop&crop=center" alt="Midnight Sun - Gold and earthy abstract painting" loading="lazy">
+                    <div class="artwork-info">
+                        <h3>Midnight Sun</h3>
+                        <span class="artwork-palette gold-earthy">Gold/Earthy</span>
+                    </div>
+                </div>
+                <div class="artwork-card" onclick="openArtworkDetail('ocean-memory')">
+                    <img src="https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=600&h=600&fit=crop&crop=center" alt="Ocean Memory - Vibrant blue abstract composition" loading="lazy">
+                    <div class="artwork-info">
+                        <h3>Ocean Memory</h3>
+                        <span class="artwork-palette vibrant">Vibrant</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Teaser -->
+    <section class="process">
+        <div class="container">
+            <h2 class="section-title">How I Work</h2>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="process-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L13.09 8.26L19.35 7L18.74 13.74L24 12L16.74 18.26L18 19.35L11.26 18.74L12 24L8.74 16.74L7 18L7.61 11.26L2 12L8.26 8.74L7.35 7L13.74 7.61L12 2Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Inspiration</h3>
+                    <p>Drawing from Iceland's landscapes and your vision to find the perfect emotional resonance.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.5 3L8 4.5H3V6.5H21V4.5H16L14.5 3H9.5ZM3 18.5C3 19.88 4.12 21 5.5 21H18.5C19.88 21 21 19.88 21 18.5V8.5H3V18.5ZM14 10.5C15.1 10.5 16 11.4 16 12.5C16 13.6 15.1 14.5 14 14.5C12.9 14.5 12 13.6 12 12.5C12 11.4 12.9 10.5 14 10.5Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Creation</h3>
+                    <p>Layering colors and textures with intention, building depth through multiple sessions.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Placement</h3>
+                    <p>Guidance on installation and lighting to ensure your piece transforms your space.</p>
+                </div>
+            </div>
+            <div class="process-cta">
+                <a href="commissions.html" class="btn btn-outline">Learn About Commissions</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Strip -->
+    <section class="instagram">
+        <div class="container">
+            <h2 class="section-title">Latest from Ósk</h2>
+            <div class="instagram-content">
+                <div class="instagram-header">
+                    <div class="instagram-profile">
+                        <div class="instagram-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616c68c8b6e?w=80&h=80&fit=crop&crop=face" alt="Ósk profile picture" loading="lazy">
+                        </div>
+                        <div class="instagram-info">
+                            <h3>@osk.n.art</h3>
+                            <p>Abstract artist • Reykjavík, Iceland</p>
+                        </div>
+                    </div>
+                    <a href="https://instagram.com/osk.n.art" class="instagram-follow-btn" target="_blank" rel="noopener">Follow</a>
+                </div>
+                
+                <div id="instagram-grid" class="instagram-grid">
+                    <!-- Posts will be loaded by JavaScript -->
+                    <div class="instagram-loading">
+                        <p>Loading latest posts...</p>
+                    </div>
+                </div>
+                
+                <!-- Fallback content if Instagram fails to load -->
+                <div id="instagram-fallback" class="instagram-fallback" style="display: none;">
+                    <div class="instagram-grid">
+                        <a href="https://instagram.com/osk.n.art" class="instagram-post" target="_blank" rel="noopener">
+                            <img src="img/nr1/aurora-whispers-detail.jpg" alt="Aurora Whispers artwork detail" loading="lazy">
+                            <div class="instagram-overlay">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </div>
+                        </a>
+                        <a href="https://instagram.com/osk.n.art" class="instagram-post" target="_blank" rel="noopener">
+                            <img src="img/nr1/aurora-whispers-living-room.jpg" alt="Aurora Whispers in living room" loading="lazy">
+                            <div class="instagram-overlay">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </div>
+                        </a>
+                        <a href="https://instagram.com/osk.n.art" class="instagram-post" target="_blank" rel="noopener">
+                            <img src="img/nr1/aurora-whispers-bedroom.jpg" alt="Aurora Whispers in bedroom" loading="lazy">
+                            <div class="instagram-overlay">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </div>
+                        </a>
+                        <a href="https://instagram.com/osk.n.art" class="instagram-post" target="_blank" rel="noopener">
+                            <img src="img/nr1/aurora-whispers-office.jpg" alt="Aurora Whispers in office" loading="lazy">
+                            <div class="instagram-overlay">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="instagram-cta">
+                        <a href="https://instagram.com/osk.n.art" class="btn btn-outline" target="_blank" rel="noopener">Follow on Instagram @osk.n.art</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Ósk n Art</h3>
+                    <p>Creating abstract expressions inspired by Iceland's natural beauty.<br>Custom artworks designed for your space and story.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigate</h4>
+                        <a href="gallery.html">Gallery</a>
+                        <a href="commissions.html">Commissions</a>
+                        <a href="about.html">About</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <a href="https://instagram.com/osk.n.art" target="_blank" rel="noopener">Instagram</a>
+                        <a href="mailto:osk@example.com">Email</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ósk n Art. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+import React, { useEffect, useMemo, useState } from "react";
+
+// ---------------------------------------------
+// Simple SPA router using the hash (no libraries)
+// ---------------------------------------------
+function useHashRoute() {
+  const [route, setRoute] = useState(() => (typeof window !== 'undefined' ? window.location.hash.replace('#', '') || 'home' : 'home'));
+  useEffect(() => {
+    const onHashChange = () => setRoute(window.location.hash.replace('#', '') || 'home');
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+  return [route, (r) => (window.location.hash = r)] as const;
+}
+
+// ---------------------------------------------
+// Demo artwork data (placeholder images via CSS)
+// ---------------------------------------------
+const ARTWORKS = [
+  { id: 1, title: "Aurora Drift", year: 2025, size: "120 × 90 cm", orientation: "landscape", palette: "Vibrant", 
+    description: "A burst of luminous color inspired by winter auroras over Faxaflói.", 
+    bg: "from-fuchsia-500 via-rose-400 to-amber-300", imageUrl: "" },
+  { id: 2, title: "Basalt & Gold", year: 2025, size: "100 × 140 cm", orientation: "portrait", palette: "Gold/Earthy", 
+    description: "Layered textures echoing volcanic stone with metallic warmth.",
+    bg: "from-stone-800 via-neutral-700 to-yellow-600", imageUrl: "" },
+  { id: 3, title: "Glacier Whisper", year: 2024, size: "100 × 100 cm", orientation: "square", palette: "Monochrome", 
+    description: "Soft gradients and feathered strokes like wind over ice.",
+    bg: "from-slate-900 via-slate-600 to-slate-300", imageUrl: "" },
+  { id: 4, title: "Eruption Memory", year: 2025, size: "160 × 100 cm", orientation: "landscape", palette: "Vibrant", 
+    description: "Energetic splashes and sparks—motion frozen mid-bloom.",
+    bg: "from-orange-700 via-red-600 to-amber-500", imageUrl: "" },
+  { id: 5, title: "Moss & Mist", year: 2024, size: "120 × 120 cm", orientation: "square", palette: "Neutral", 
+    description: "Hazy layers of stone, moss, and vapor in quiet harmony.",
+    bg: "from-emerald-900 via-zinc-600 to-zinc-300", imageUrl: "" },
+  { id: 6, title: "Tidal Threads", year: 2023, size: "140 × 90 cm", orientation: "landscape", palette: "Gold/Earthy", 
+    description: "Veins of foam and sand weaving along a moon-pulled shore.",
+    bg: "from-amber-700 via-stone-500 to-stone-200", imageUrl: "" },
+  { id: 7, title: "Obsidian Air", year: 2025, size: "120 × 80 cm", orientation: "landscape", palette: "Monochrome", 
+    description: "High-contrast crosswinds over a dark field.",
+    bg: "from-neutral-900 via-zinc-700 to-neutral-400", imageUrl: "" },
+  { id: 8, title: "Sea-Spray Bloom", year: 2024, size: "110 × 110 cm", orientation: "square", palette: "Vibrant", 
+    description: "Color petals breaking like surf on light.",
+    bg: "from-cyan-700 via-sky-500 to-indigo-400", imageUrl: "" },
+  { id: 9, title: "Ash & Light", year: 2023, size: "90 × 140 cm", orientation: "portrait", palette: "Neutral", 
+    description: "Smoky diagonals cut by beams of pale gold.",
+    bg: "from-zinc-900 via-zinc
+
+const PALETTES = ["Gold/Earthy", "Monochrome", "Vibrant", "Neutral"] as const;
+const ORIENTATIONS = ["landscape", "portrait", "square"] as const;
+const SIZES = ["Small", "Medium", "Large"] as const; // informational chips for UX; real sizes shown on cards
+
+// ---------------------------------------------
+// Shared components
+// ---------------------------------------------
+function Chip({ active, onClick, children }: { active?: boolean; onClick?: () => void; children: React.ReactNode }) {
+  return (
+    <button onClick={onClick} className={`px-3 py-1 rounded-full border text-sm transition ${active ? 'bg-black text-white border-black' : 'bg-white/70 hover:bg-white border-zinc-300 text-zinc-800'}`}>{children}</button>
+  );
+}
+
+function Section({ id, title, subtitle, children }: { id?: string; title: string; subtitle?: string; children?: React.ReactNode }) {
+  return (
+    <section id={id} className="max-w-7xl mx-auto px-4 md:px-8 py-16">
+      <div className="mb-10">
+        <h2 className="text-3xl md:text-5xl font-serif tracking-tight text-zinc-900">{title}</h2>
+        {subtitle && <p className="mt-3 max-w-2xl text-zinc-600">{subtitle}</p>}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function GradientArtwork({ art, onClick }: { art: typeof ARTWORKS[number]; onClick?: () => void }) {
+  return (
+    <div onClick={onClick} className="group cursor-pointer">
+      <div className={`aspect-[4/3] w-full rounded-2xl shadow-sm overflow-hidden bg-gradient-to-br ${art.bg} transition-transform duration-300 group-hover:scale-[1.02]`} />
+      <div className="pt-3">
+        <h3 className="text-lg font-medium text-zinc-900">{art.title}</h3>
+        <p className="text-sm text-zinc-600">{art.year} · {art.size} · {art.palette}</p>
+      </div>
+    </div>
+  );
+}
+
+function Lightbox({ art, onClose }: { art: typeof ARTWORKS[number] | null; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  if (!art) return null;
+  return (
+    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
+      <div className="max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
+        <div className={`w-full aspect-[4/3] rounded-2xl bg-gradient-to-br ${art.bg}`} />
+        <div className="mt-4 bg-white rounded-2xl p-5">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h3 className="text-2xl font-serif text-zinc-900">{art.title}</h3>
+              <p className="text-sm text-zinc-500 mt-1">{art.year} · {art.size} · {art.palette} · {art.orientation}</p>
+            </div>
+            <button className="px-3 py-1.5 rounded-full bg-black text-white text-sm" onClick={onClose}>Close</button>
+          </div>
+          <p className="mt-3 text-zinc-700">{art.description}</p>
+          <a href="#commissions" className="inline-block mt-4 px-4 py-2 rounded-full border border-black hover:bg-black hover:text-white transition">Commission in this style</a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------
+// Pages
+// ---------------------------------------------
+function HomePage() {
+  return (
+    <main>
+      {/* Hero */}
+      <div className="relative">
+        <div className="h-[70vh] md:h-[80vh] w-full bg-gradient-to-br from-amber-200 via-zinc-100 to-white"/>
+        <div className="absolute inset-0 flex items-center">
+          <div className="max-w-7xl mx-auto w-full px-6 md:px-8">
+            <div className="max-w-2xl">
+              <h1 className="text-4xl md:text-6xl font-serif tracking-tight text-zinc-900">Ósk n Art</h1>
+              <p className="mt-4 text-zinc-700 text-lg md:text-xl">Icelandic Abstract Artist — Color & Size Commissions</p>
+              <div className="mt-8 flex gap-3">
+                <a href="#gallery" className="px-5 py-3 rounded-full bg-black text-white">View Gallery</a>
+                <a href="#commissions" className="px-5 py-3 rounded-full border border-black hover:bg-black hover:text-white transition">Commission a Piece</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Intro */}
+      <Section title="Abstracts shaped by Iceland" subtitle="Textured layers, metallic warmth, and color stories guided by light, stone, and ocean. Each work is designed to live with your space—balanced in palette and scale.">
+        <div className="grid md:grid-cols-3 gap-6">
+          {ARTWORKS.slice(0, 3).map(a => (
+            <div key={a.id} className="rounded-2xl overflow-hidden">
+              <div className={`aspect-[4/3] bg-gradient-to-br ${a.bg}`} />
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Featured */}
+      <Section title="Featured Works" subtitle="A selection across palettes and orientations.">
+        <FeaturedGrid limit={6} />
+      </Section>
+
+      {/* Process teaser */}
+      <Section title="From idea to hanging" subtitle="A simple, collaborative commission process.">
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            {title: 'Inspiration', text: 'Share photos of your wall, rough dimensions, and the colors you love.'},
+            {title: 'Creation', text: 'We agree on palette & size. I paint your piece in 2–4 weeks.'},
+            {title: 'Placement', text: 'Guidance for hanging and care so it looks perfect in your space.'},
+          ].map((s, i) => (
+            <div key={i} className="rounded-2xl border p-6 bg-white">
+              <div className="text-sm font-semibold tracking-wide text-zinc-500">STEP {i+1}</div>
+              <div className="mt-2 text-2xl font-serif">{s.title}</div>
+              <p className="mt-2 text-zinc-700">{s.text}</p>
+            </div>
+          ))}
+        </div>
+        <a href="#commissions" className="inline-block mt-8 px-5 py-3 rounded-full bg-black text-white">Commission a Piece</a>
+      </Section>
+
+      {/* Instagram */}
+      <Section title="Instagram" subtitle="Follow @osk.n.art for new work and studio moments.">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className={`aspect-square rounded-xl bg-gradient-to-br ${ARTWORKS[i % ARTWORKS.length].bg}`} />
+          ))}
+        </div>
+        <a href="https://instagram.com/osk.n.art" target="_blank" rel="noreferrer" className="inline-block mt-6 px-4 py-2 rounded-full border border-black hover:bg-black hover:text-white">@osk.n.art</a>
+      </Section>
+    </main>
+  );
+}
+
+function FeaturedGrid({ limit }: { limit?: number }) {
+  const [open, setOpen] = useState<typeof ARTWORKS[number] | null>(null);
+  return (
+    <>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {ARTWORKS.slice(0, limit ?? ARTWORKS.length).map((art) => (
+          <GradientArtwork key={art.id} art={art} onClick={() => setOpen(art)} />
+        ))}
+      </div>
+      <Lightbox art={open} onClose={() => setOpen(null)} />
+    </>
+  );
+}
+
+function GalleryPage() {
+  const [palette, setPalette] = useState<string | null>(null);
+  const [orientation, setOrientation] = useState<string | null>(null);
+
+  const filtered = useMemo(() => ARTWORKS.filter(a => (
+    (!palette || a.palette === palette) && (!orientation || a.orientation === orientation)
+  )), [palette, orientation]);
+
+  const [open, setOpen] = useState<typeof ARTWORKS[number] | null>(null);
+
+  return (
+    <main>
+      <Section title="Gallery" subtitle="Filter by palette and orientation. Click an artwork for details.">
+        <div className="flex flex-wrap items-center gap-3 mb-6">
+          <div className="text-sm text-zinc-500 mr-2">Palette:</div>
+          <Chip active={!palette} onClick={() => setPalette(null)}>All</Chip>
+          {PALETTES.map(p => <Chip key={p} active={palette===p} onClick={() => setPalette(p)}>{p}</Chip>)}
+        </div>
+        <div className="flex flex-wrap items-center gap-3 mb-8">
+          <div className="text-sm text-zinc-500 mr-2">Orientation:</div>
+          <Chip active={!orientation} onClick={() => setOrientation(null)}>All</Chip>
+          {ORIENTATIONS.map(o => <Chip key={o} active={orientation===o} onClick={() => setOrientation(o)}>{o}</Chip>)}
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map(art => <GradientArtwork key={art.id} art={art} onClick={() => setOpen(art)} />)}
+        </div>
+      </Section>
+      <Lightbox art={open} onClose={() => setOpen(null)} />
+    </main>
+  );
+}
+
+function CommissionsPage() {
+  return (
+    <main>
+      <Section id="commissions" title="Commission a Custom Abstract" subtitle="Bespoke pieces tailored to your space, palette, and mood.">
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold">What I Create</h3>
+              <p className="mt-2 text-zinc-700">One-of-a-kind abstract paintings designed around your color story and the scale of your room. Metallic accents and layered textures bring depth that shifts with light throughout the day.</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold">How It Works</h3>
+              <ol className="mt-2 space-y-2 text-zinc-700 list-decimal list-inside">
+                <li>Share your wall photos, rough dimensions, and reference colors.</li>
+                <li>We confirm size, palette, and price; 30% deposit to begin.</li>
+                <li>Creation window 2–4 weeks with progress check-ins.</li>
+                <li>Pickup in Reykjavík or shipping arranged worldwide.</li>
+              </ol>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold">What I Need From You</h3>
+              <p className="mt-2 text-zinc-700">A sense of the atmosphere you want, any palette preferences, and the measurements of your wall or existing frame. Inspiration photos are welcome.</p>
+            </div>
+            <div className="flex gap-3 pt-2">
+              <a href="mailto:studio@example.com" className="px-5 py-3 rounded-full bg-black text-white">Email Ósk</a>
+              <a href="https://instagram.com/osk.n.art" target="_blank" rel="noreferrer" className="px-5 py-3 rounded-full border border-black hover:bg-black hover:text-white">Message on Instagram</a>
+            </div>
+          </div>
+          <div className="rounded-3xl overflow-hidden border bg-white">
+            <div className="aspect-[4/3] bg-gradient-to-br from-amber-600 via-zinc-700 to-zinc-300" />
+            <div className="p-6">
+              <p className="text-sm text-zinc-600">Example commission mockup. Your piece will be developed collaboratively to match your space.</p>
+            </div>
+          </div>
+        </div>
+      </Section>
+    </main>
+  );
+}
+
+function AboutPage() {
+  return (
+    <main>
+      <Section title="About Ósk" subtitle="Icelandic roots; a focus on light, stone, ocean, and the emotions they hold.">
+        <div className="grid md:grid-cols-3 gap-8 items-start">
+          <div className="md:col-span-1">
+            <div className="aspect-[3/4] rounded-3xl bg-gradient-to-br from-zinc-300 to-amber-200" />
+          </div>
+          <div className="md:col-span-2 space-y-6">
+            <p className="text-zinc-700">Ósk creates expressive abstract works with layered textures and metallic warmth, drawing from Iceland’s raw coastlines and volcanic terrain. Each piece is composed to feel alive with changing light—quiet in the morning, glowing at dusk.</p>
+            <div>
+              <h3 className="text-xl font-semibold">Highlights</h3>
+              <ul className="mt-2 space-y-2 text-zinc-700 list-disc list-inside">
+                <li>Private commissions across Iceland and abroad</li>
+                <li>Group exhibitions in Reykjavík (placeholder)</li>
+                <li>Large-scale works for residential interiors</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold">Materials & Care</h3>
+              <p className="mt-2 text-zinc-700">Professional-grade acrylics with optional metallic leaf on gallery-wrapped canvas. Dust with a soft dry cloth; avoid direct sunlight and moisture. Framing optional.</p>
+            </div>
+          </div>
+        </div>
+      </Section>
+    </main>
+  );
+}
+
+function ContactPage() {
+  return (
+    <main>
+      <Section title="Get in touch" subtitle="Reach out to discuss a piece or a commission. (No contact form)">
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-4 text-lg">
+            <p><span className="font-semibold">Email:</span> <a className="underline" href="mailto:studio@example.com">studio@example.com</a></p>
+            <p><span className="font-semibold">Phone:</span> <a className="underline" href="tel:+3540000000">+354 000 0000</a></p>
+            <p><span className="font-semibold">Instagram:</span> <a className="underline" href="https://instagram.com/osk.n.art" target="_blank" rel="noreferrer">@osk.n.art</a></p>
+            <p className="text-zinc-600 text-base">Based in Reykjavík, Iceland. Typical response within 1–2 business days.</p>
+          </div>
+          <div className="rounded-3xl border overflow-hidden">
+            <div className="aspect-[4/3] bg-gradient-to-br from-zinc-100 to-amber-100" />
+          </div>
+        </div>
+      </Section>
+    </main>
+  );
+}
+
+// ---------------------------------------------
+// Shell (header, footer, route swap)
+// ---------------------------------------------
+function Header() {
+  const [route, setRoute] = useHashRoute();
+  const [solid, setSolid] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setSolid(window.scrollY > 10);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  const link = (id: string, label: string) => (
+    <a onClick={() => setRoute(id)} className={`px-3 py-2 rounded-full text-sm ${route===id? 'bg-black text-white' : 'hover:bg-zinc-100'}`} href={`#${id}`}>{label}</a>
+  );
+  return (
+    <header className={`fixed top-0 inset-x-0 z-40 transition ${solid ? 'backdrop-blur bg-white/80 border-b' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+        <a href="#home" className="font-serif text-xl">Ósk n Art</a>
+        <nav className="hidden md:flex gap-1 items-center">
+          {link('home','Home')}
+          {link('gallery','Gallery')}
+          {link('commissions','Commissions')}
+          {link('about','About')}
+          {link('contact','Contact')}
+        </nav>
+        <a href="#commissions" className="px-4 py-2 rounded-full bg-black text-white hidden md:inline-block">Commission</a>
+      </div>
+    </header>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t mt-24">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 grid md:grid-cols-3 gap-8 items-center">
+        <div>
+          <div className="font-serif text-2xl">Ósk n Art</div>
+          <p className="text-zinc-600 mt-2">Icelandic abstract art for modern interiors. Bespoke color & size commissions.</p>
+        </div>
+        <nav className="flex gap-4 md:justify-center">
+          <a className="hover:underline" href="#home">Home</a>
+          <a className="hover:underline" href="#gallery">Gallery</a>
+          <a className="hover:underline" href="#commissions">Commissions</a>
+          <a className="hover:underline" href="#about">About</a>
+          <a className="hover:underline" href="#contact">Contact</a>
+        </nav>
+        <div className="md:text-right">
+          <a href="https://instagram.com/osk.n.art" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black hover:bg-black hover:text-white">Instagram</a>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function RouterView() {
+  const [route] = useHashRoute();
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [route]);
+  switch (route) {
+    case 'home': return <HomePage/>;
+    case 'gallery': return <GalleryPage/>;
+    case 'commissions': return <CommissionsPage/>;
+    case 'about': return <AboutPage/>;
+    case 'contact': return <ContactPage/>;
+    default: return <HomePage/>;
+  }
+}
+
+export default function App() {
+  useEffect(() => { if (!window.location.hash) window.location.hash = 'home'; }, []);
+  return (
+    <div className="min-h-screen bg-white text-zinc-900">
+      <Header/>
+      <div className="pt-16"/>
+      <RouterView/>
+      <Footer/>
+    </div>
+  );
+}
