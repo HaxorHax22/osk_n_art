@@ -83,17 +83,23 @@ function openArtworkDetail(artworkId) {
 
 // Gallery filtering functionality
 function initializeGallery() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    const filterButtons = document.querySelectorAll('.filter-chip, .reset-btn');
     const artworkItems = document.querySelectorAll('.gallery-item');
     
     if (filterButtons.length === 0) return;
     
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            button.classList.add('active');
+            // Remove active class from all filter chips
+            document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button (only if it's a filter chip)
+            if (button.classList.contains('filter-chip')) {
+                button.classList.add('active');
+            } else if (button.classList.contains('reset-btn')) {
+                // If reset button, activate the "All Palettes" chip
+                const allChip = document.querySelector('.filter-chip[data-filter="all"]');
+                if (allChip) allChip.classList.add('active');
+            }
             
             const filterValue = button.getAttribute('data-filter');
             
@@ -451,6 +457,94 @@ window.artworkData = {
                 src: 'img/nr1/aurora-whispers-detail.jpg',
                 alt: 'Close-up detail of Aurora Whispers showing texture and brushwork',
                 title: 'Detail View'
+            }
+        ]
+    },
+    'ocean-memory': {
+        title: 'Ocean Memory',
+        yearSize: '2024 • 100×80 cm',
+        medium: 'Acrylic and mixed media on canvas',
+        description: 'Inspired by the deep blues and shifting patterns of Iceland\'s coastal waters, this piece captures the rhythmic movement and profound depth of oceanic memories. The layered textures and fluid forms evoke the eternal dance between sea and sky, creating a meditative focal point for any interior.',
+        tags: ['Vibrant', 'Seascape', 'Large'],
+        images: [
+            {
+                src: 'img/nr2/ocean-memory-living-room.jpg',
+                alt: 'Ocean Memory displayed in a modern living room setting',
+                title: 'Living Room Setting'
+            },
+            {
+                src: 'img/nr2/ocean-memory-bedroom.jpg',
+                alt: 'Ocean Memory displayed in a peaceful bedroom environment',
+                title: 'Bedroom Setting'
+            },
+            {
+                src: 'img/nr2/ocean-memory-office.jpg',
+                alt: 'Ocean Memory displayed in a contemporary office space',
+                title: 'Office Setting'
+            },
+            {
+                src: 'img/nr2/ocean-memory-detail.jpg',
+                alt: 'Close-up detail of Ocean Memory showing texture and color depth',
+                title: 'Detail View'
+            },
+            {
+                src: 'img/nr2/ocean-memory-studio.jpg',
+                alt: 'Ocean Memory in the artist\'s studio showing scale and presence',
+                title: 'Studio View'
+            },
+            {
+                src: 'img/nr2/ocean-memory-close-up.jpg',
+                alt: 'Extreme close-up of Ocean Memory revealing surface texture and brushwork',
+                title: 'Close-up Detail'
+            }
+        ]
+    },
+    'volcanic-silence': {
+        title: 'Volcanic Silence',
+        yearSize: '2024 • 120×90 cm',
+        medium: 'Acrylic and mixed media on canvas',
+        description: 'Drawing from the raw energy and profound stillness of Iceland\'s volcanic landscapes, this piece embodies the contrast between fire and tranquility. Deep earth tones merge with dramatic textures, creating a powerful statement piece that speaks to both passion and contemplation.',
+        tags: ['Earthy', 'Abstract', 'Large'],
+        images: [
+            {
+                src: 'img/nr3/volcanic-silence-living-room.jpg',
+                alt: 'Volcanic Silence displayed in a contemporary living room setting',
+                title: 'Living Room Setting'
+            },
+            {
+                src: 'img/nr3/volcanic-silence-bedroom.jpg',
+                alt: 'Volcanic Silence displayed in a modern bedroom environment',
+                title: 'Bedroom Setting'
+            },
+            {
+                src: 'img/nr3/volcanic-silence-office.jpg',
+                alt: 'Volcanic Silence displayed in a professional office space',
+                title: 'Office Setting'
+            },
+            {
+                src: 'img/nr3/volcanic-silence-detail.jpg',
+                alt: 'Close-up detail of Volcanic Silence showing texture and depth',
+                title: 'Detail View'
+            },
+            {
+                src: 'img/nr3/volcanic-silence-studio.jpg',
+                alt: 'Volcanic Silence in the artist\'s studio showing scale and presence',
+                title: 'Studio View'
+            },
+            {
+                src: 'img/nr3/volcanic-silence-close-up.jpg',
+                alt: 'Extreme close-up of Volcanic Silence revealing surface texture',
+                title: 'Close-up Detail'
+            },
+            {
+                src: 'img/nr3/volcanic-silence-dining-room.jpg',
+                alt: 'Volcanic Silence displayed in an elegant dining room setting',
+                title: 'Dining Room Setting'
+            },
+            {
+                src: 'img/nr3/volcanic-silence-modern-interior.jpg',
+                alt: 'Volcanic Silence displayed in a modern interior space',
+                title: 'Modern Interior'
             }
         ]
     }
