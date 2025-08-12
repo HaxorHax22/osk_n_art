@@ -4,14 +4,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     
-    // Navigation scroll effect
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 100) {
-            nav.classList.remove('transparent');
-        } else {
-            nav.classList.add('transparent');
-        }
-    });
+    // Navigation scroll effect (only on homepage)
+    const isHomepage = window.location.pathname === '/' || 
+                      window.location.pathname.includes('index.html') ||
+                      window.location.pathname === '/index.html' ||
+                      document.querySelector('.hero'); // Fallback: check if hero section exists
+    
+    if (isHomepage) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                nav.classList.remove('transparent');
+            } else {
+                nav.classList.add('transparent');
+            }
+        });
+        
+        // Set initial transparent state on homepage
+        nav.classList.add('transparent');
+    } else {
+        // Ensure nav is never transparent on other pages
+        nav.classList.remove('transparent');
+    }
     
     // Enhanced Mobile menu toggle
     if (navToggle) {
